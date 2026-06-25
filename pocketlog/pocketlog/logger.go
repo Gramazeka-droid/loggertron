@@ -15,8 +15,18 @@ type Logger struct {
 /* Fields like threshold and output start with lowercase letters so they remain unexported (private). Users will interact with them only through the New function and methods like Debugf, Infof,etc.
 */
 
-func New(threshold Level) *Logger {
-	return &Logger{threshold: threshold}
+/* New returns a logger ready to log at the required threshold.
+New accepts optional configuration functions.
+*/
+func New(threshold Level, opts ...Option) *Logger {
+	lgr := &Logger {
+		threshold: threshold,
+		output: os.Stdout, // default output value
+	}
+	for _, configFunc := range opts {
+		configFunc(lgr)
+	}
+	return lgr
 }
 
 
