@@ -7,7 +7,7 @@ type Option func(*Logger)
 
 /* WithOutPut return a confirmation function that sets the output of logs.
 */
-func WithOutPut(output io.Writer) Option {
+func WithOutput(output io.Writer) Option {
   return func(lgr *Logger) {
     lgr.output = output
   }
