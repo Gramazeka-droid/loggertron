@@ -17,3 +17,18 @@ const (
 */
 	LevelError
 )
+
+/* String() method returns the string representation of the logging level.
+*/
+func (l Level) String() string {
+	switch l {
+	case LevelDebug:
+		return "[DEBUG]"
+	case LevelInfo:
+		return "[INFO]"
+	case LevelError:
+		return "[ERROR]"
+	default:
+		return "[UNKNOWN]"
+	}
+}
