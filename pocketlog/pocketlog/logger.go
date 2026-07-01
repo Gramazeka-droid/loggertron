@@ -84,7 +84,7 @@ func (l *Logger) logf(lvl Level, format string, args...any) {
 		return
 	}
 // Write the JSON followed by a new line to the output
-	_, _ = l.output.Write(append(bytes, "\n"...))
+	_, _ = l.output.Write(append(bytes, `\n`...))
 /* Why do this?
 Machine Readable: Programs can easily parse these logs to track error rates or request speeds.
 Standardization: It follows industry best practices for cloud-native applications.
