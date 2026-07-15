@@ -1,9 +1,11 @@
 package pocketlog_test
 
 import (
+  "encoding/json"
+  "strings"
   "pocketlog/logger/pocketlog"
   "testing"
-"github.com/stretchr/testify/assert"
+  "github.com/stretchr/testify/assert"
 )
 
 /* testWriter is a struct that implements io.Writer interface.
@@ -20,15 +22,19 @@ func (tw *testWriter) Write(p []byte) (n int, err error) {
 
 func TestLogger_Infof(t *testing.T) {
   tw := &testWriter{}
-// Create a logged with Info threshold and our test writer.
+// Create a logger with Info threshold and our test writer.
   lgr := pocketlog.New(pocketlog.LevelInfo, pocketlog.WithOutput(tw))
 
   lgr.Infof("Hello %s", "Gopher")
 
-  expected := `{"level":"[INFO]","message":"Hello Gopher"}\n`
-  if tw.contents != expected {
-    t.Errorf("expected %q, got %q", expected, tw.contents)
-  }
+// Decode the JSON output into a map so we can check each field
+// without worrying about the timestamp value changing every second.
+  var got map[string]string
+  err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
+  assert.NoError(t, err, "output should be valid JSON")
+  assert.Equal(t, "[INFO]", got["level"])
+  assert.Equal(t, "Hello Gopher", got["message"])
+  assert.NotEmpty(t, got["time"], "time field should be present")
 }
 
 func TestLogger_JSONOutput(t *testing.T) {
