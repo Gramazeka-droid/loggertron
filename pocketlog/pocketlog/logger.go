@@ -80,8 +80,9 @@ Unless we add  even higher levels like Fatal.
 It adds a new line to every message. It prepends theog level to the format string.
 */
 func (l *Logger) logf(lvl Level, format string, args...any) {
-	/* Creste  a log entry with the current time, level, and formatted message */
-	_, file, line := runtime.Caller(2)
+	/* Create  a log entry with the current time, level, and formatted message */
+	_, file, line, _ := runtime.Caller(2)
+/* runtime.Caller(2) gets the file name and line number of the caller of the caller of logf (which is the function that called Debugf, Infof, etc.) */
 	entry := logEntry {
 		Time: time.Now().UTC().Format(time.RFC3339),
 		// time.Now() gets the current moment
