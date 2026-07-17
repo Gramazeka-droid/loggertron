@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"encoding/json"
+	"runtime"
 	"time"
 )
 
@@ -23,7 +24,7 @@ type logEntry struct {
 	Level string `json:"level"`
 	Message string `json:"message"`
 	File string `json:"file"`
-	Line int `json: "line"`
+	Line int `json:"line"`
 }
 /* New returns a logger ready to log at the required threshold.
 New accepts optional configuration functions.
@@ -79,13 +80,15 @@ Unless we add  even higher levels like Fatal.
 It adds a new line to every message. It prepends theog level to the format string.
 */
 func (l *Logger) logf(lvl Level, format string, args...any) {
+	/* Creste  a log entry with the current time, level, and formatted message */
+	_, file, line := runtime.Caller(2)
 	entry := logEntry {
 		Time: time.Now().UTC().Format(time.RFC3339),
 		// time.Now() gets the current moment
 		// UTC () converts it to UTC time zone (same for everyone in the world)
 		// Format () converts it to a string in RFC33339 format (formats it as "2026-07-15T03:42:11Z", which is the international standard format for date and time in JSON)
 		Level: lvl.String(),
-		Message: fmt.Sprintf(format, args...),
+		Message: fmt.Sprintf(format, args...), File: file, Line: line,
 	}
 // Convert the log entry to JSON byte slice
 	bytes, err := json.Marshal(entry)
