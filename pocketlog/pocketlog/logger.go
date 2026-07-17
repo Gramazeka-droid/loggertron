@@ -22,6 +22,8 @@ type logEntry struct {
 	Time string `json:"time"`
 	Level string `json:"level"`
 	Message string `json:"message"`
+	File string `json:"file"`
+	Line int `json: "line"`
 }
 /* New returns a logger ready to log at the required threshold.
 New accepts optional configuration functions.
