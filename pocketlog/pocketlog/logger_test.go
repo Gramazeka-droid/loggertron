@@ -31,6 +31,7 @@ func TestLogger_Infof(t *testing.T) {
 // without worrying about the timestamp value changing every second.
   var got map[string]string
   err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
+  assert.NoError(t, err, "output should be valid JSON")
   assert.Equal(t, "[INFO]", got["level"])
   assert.Equal(t, "Hello Gopher", got["message"])
   assert.NotEmpty(t, got["time"], "time field should be present")
