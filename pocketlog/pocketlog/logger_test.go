@@ -51,7 +51,7 @@ func TestLogger_JSONOutput(t *testing.T) {
 func TestLoggerWarningf(t *testing.T){
   tw := &testWriter{}
   lgr := pocketlog.New(pocketlog.LevelWarning, pocketlog.WithOutput(tw))
-  lgr.Warning("disk usage at %d%%", 90)
+  lgr.Warningf("disk usage at %d%%", 90)
   var got map[string]string
   err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
   assert.NoError(t, err, "output should be vaid JSON")
