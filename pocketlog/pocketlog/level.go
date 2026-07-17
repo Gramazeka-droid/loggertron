@@ -15,7 +15,10 @@ const (
 	LevelInfo
 /* LevelError represents the highest logging level for tracing errors.
 */
+	LevelWarning
+	/* LevelWarning represents the logging level for tracing warnings.*/
 	LevelError
+	/* LevelError represents the highest logging level for tracing errors.*/
 )
 
 /* String() method returns the string representation of the logging level.
@@ -26,6 +29,8 @@ func (l Level) String() string {
 		return "[DEBUG]"
 	case LevelInfo:
 		return "[INFO]"
+	case LevelWarning:
+		return "[WARNING]"
 	case LevelError:
 		return "[ERROR]"
 	default:

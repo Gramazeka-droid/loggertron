@@ -56,10 +56,13 @@ func (l *Logger) Infof(format string, args ...any) {
 	l.logf(LevelInfo, format, args...)
 }
 
-/* func (l *Logger) Warningf(format string, args ...any) {
-	l.log(LevelWarning, format, args...)
+/* Warningf formats and prints a message if the log level is  warning or higher.*/
+func (l *Logger) Warningf(format string, args ...any) {
+	if l.threshold > LevelWarning {
+		return
+	} 
+	l.logf(LevelWarning, format, args...)
 }
-*/
 
 /* Errorf formats and prints a message if the log level is error.
 */
