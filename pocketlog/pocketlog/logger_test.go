@@ -29,12 +29,18 @@ func TestLogger_Infof(t *testing.T) {
 
 // Decode the JSON output into a map so we can check each field
 // without worrying about the timestamp value changing every second.
-  var got map[string]string
+  var got struct {
+    Time    string `json:"time"`
+    Level   string `json:"level"`
+    Message string `json:"message"`
+    File    string `json:"file"`
+    Line    int    `json:"line"`
+  }
   err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
   assert.NoError(t, err, "output should be valid JSON")
-  assert.Equal(t, "[INFO]", got["level"])
-  assert.Equal(t, "Hello Gopher", got["message"])
-  assert.NotEmpty(t, got["time"], "time field should be present")
+  assert.Equal(t, "[INFO]", got.Level)
+  assert.Equal(t, "Hello Gopher", got.Message)
+  assert.NotEmpty(t, got.Time, "time field should be present")
 }
 
 func TestLogger_JSONOutput(t *testing.T) {
@@ -52,10 +58,35 @@ func TestLoggerWarningf(t *testing.T){
   tw := &testWriter{}
   lgr := pocketlog.New(pocketlog.LevelWarning, pocketlog.WithOutput(tw))
   lgr.Warningf("disk usage at %d%%", 90)
-  var got map[string]string
+  var got struct {
+    Time    string `json:"time"`
+    Level   string `json:"level"`
+    Message string `json:"message"`
+    File    string `json:"file"`
+    Line    int    `json:"line"`
+  }
   err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
   assert.NoError(t, err, "output should be vaid JSON")
-  assert.Equal(t, "[WARNING]", got["level"])
-  assert.Equal(t, "disk usage at 90%", got["message"])
-  assert.NotEmpty(t, got["time"], "time field should be present")
+  assert.Equal(t, "[WARNING]", got.Level)
+  assert.Equal(t, "disk usage at 90%", got.Message)
+  assert.NotEmpty(t, got.Time, "time field should be present")
+}
+
+func TestLogger_CallerInfo(t *testing.T) {
+  tw := &testWriter{}
+  lgr := pocketlog.New(pocketlog.LevelDebug, pocketlog.WithOutput(tw))
+
+  lgr.Debugf("checking caller info")
+
+  var got struct {
+    Time    string `json:"time"`
+    Level   string `json:"level"`
+    Message string `json:"message"`
+    File    string `json:"file"`
+    Line    int    `json:"line"`
+  }
+  err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
+  assert.NoError(t, err, "output should be valid JSON")
+  assert.NotEmpty(t, got.File, "file should be present")
+  assert.Greater(t, got.Line, 0, "line should be a positive number")
 }
