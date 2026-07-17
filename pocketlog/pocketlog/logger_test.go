@@ -47,3 +47,15 @@ func TestLogger_JSONOutput(t *testing.T) {
 // JSONEq will pass even if the key order is different
   assert.JSONEq(t, expectedJSON, actualJSON)
 }
+
+func TestLoggerWarningf(t *testing.T){
+  tw := &testWriter{}
+  lgr := pocketlog.New(pocketlog.LevelWarning, pocketlog.WithOutput(tw))
+  lgr.Warning("disk usage at %d%%", 90)
+  var got map[string]string
+  err := json.Unmarshal([]byte(strings.TrimSpace(tw.contents)), &got)
+  assert.NoError(t, err, "output should be vaid JSON")
+  assert.Equal(t, "[WARNING]", got["level"])
+  assert.Equal(t, "disk usage at 90%", got["message"])
+  assert.NotEmpty(t, got["time"], "time field should be present")
+}
