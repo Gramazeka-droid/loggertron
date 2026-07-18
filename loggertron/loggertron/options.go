@@ -1,4 +1,4 @@
-package pocketlog
+package loggertron
 
 import "io"
 /* Option defines a functional option for the logger
