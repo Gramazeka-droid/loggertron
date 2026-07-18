@@ -1,9 +1,9 @@
-package pocketlog_test
+package loggertron_test
 
 import (
   "encoding/json"
   "strings"
-  "pocketlog/logger/pocketlog"
+  "loggertron/loggertron"
   "testing"
   "github.com/stretchr/testify/assert"
 )
@@ -23,7 +23,7 @@ func (tw *testWriter) Write(p []byte) (n int, err error) {
 func TestLogger_Infof(t *testing.T) {
   tw := &testWriter{}
 // Create a logger with Info threshold and our test writer.
-  lgr := pocketlog.New(pocketlog.LevelInfo, pocketlog.WithOutput(tw))
+  lgr := loggertron.New(loggertron.LevelInfo, loggertron.WithOutput(tw))
 
   lgr.Infof("Hello %s", "Gopher")
 
@@ -56,7 +56,7 @@ func TestLogger_JSONOutput(t *testing.T) {
 
 func TestLoggerWarningf(t *testing.T){
   tw := &testWriter{}
-  lgr := pocketlog.New(pocketlog.LevelWarning, pocketlog.WithOutput(tw))
+  lgr := loggertron.New(loggertron.LevelWarning, loggertron.WithOutput(tw))
   lgr.Warningf("disk usage at %d%%", 90)
   var got struct {
     Time    string `json:"time"`
@@ -74,7 +74,7 @@ func TestLoggerWarningf(t *testing.T){
 
 func TestLogger_CallerInfo(t *testing.T) {
   tw := &testWriter{}
-  lgr := pocketlog.New(pocketlog.LevelDebug, pocketlog.WithOutput(tw))
+  lgr := loggertron.New(loggertron.LevelDebug, loggertron.WithOutput(tw))
 
   lgr.Debugf("checking caller info")
 
