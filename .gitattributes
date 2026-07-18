@@ -1,0 +1,15 @@
+# Tell GitHub Linguist to ignore non-Go workspace scaffolding
+# so the repository is correctly identified as a Go project.
+
+artifacts/** linguist-vendored
+lib/** linguist-vendored
+scripts/** linguist-vendored
+node_modules/** linguist-vendored
+*.json linguist-vendored
+*.yaml linguist-vendored
+*.lock linguist-vendored
+*.mjs linguist-vendored
+*.tsx linguist-vendored
+*.ts linguist-vendored
+*.css linguist-vendored
+*.html linguist-vendored
