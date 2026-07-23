@@ -151,7 +151,9 @@ func (lgr *Logger) logf(lvl Level, format string, args ...any) {
 		fmt.Fprintf(os.Stderr, "loggertron format error: %v\n", err)
 		return
 	}
-	//
+	/* Check if the file is writable before writing to it.
+	If the file is not writable, we log the error to stderr instead of the file.
+	*/
 	if _, err = lgr.output.Write(formatted); err != nil {
 		fmt.Fprintf(os.Stderr, "loggertron write error: %v\n", err)
 	}
