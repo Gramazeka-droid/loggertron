@@ -1,1 +1,29 @@
+# .gitignore
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+loggertron
+/loggertron
 
+# Test binary
+*.test
+
+# Output of go coverage
+*.out
+
+# Go workspace
+go.work
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+EOF
